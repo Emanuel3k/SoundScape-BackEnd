@@ -36,10 +36,18 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler(HttpMessageNotReadableException.class)
-  public ResponseEntity<Map<String, String>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
+  public ResponseEntity<Map<String, String>> handleHttpMessageNotReadableException() {
     Map<String, String> errors = new HashMap<>();
     errors.put("message", "Invalid request body");
 
     return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(Exception.class)
+  public ResponseEntity<Map<String, String>> handleUnmappedException() {
+    Map<String, String> errors = new HashMap<>();
+    errors.put("message", "An unexpected error occurred");
+
+    return new ResponseEntity<>(errors, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 }
