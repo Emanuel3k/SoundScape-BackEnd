@@ -1,5 +1,6 @@
 package com.emanuel3k.soundscape_backend.domain.user.model;
 
+import com.emanuel3k.soundscape_backend.domain.auth.model.Roles;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,6 +28,9 @@ public class User {
 
   @Column(nullable = false)
   private String password;
+
+  @Column(nullable = false)
+  private Roles role = Roles.USER;
 
   @Column(nullable = false)
   private boolean isActive = true;
