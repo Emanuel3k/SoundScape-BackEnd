@@ -1,6 +1,7 @@
 package com.emanuel3k.soundscape_backend.controller.v1;
 
 import com.emanuel3k.soundscape_backend.domain.auth.dto.LoginRequestDTO;
+import com.emanuel3k.soundscape_backend.domain.auth.dto.TokenResponseDTO;
 import com.emanuel3k.soundscape_backend.domain.user.dto.CreateUserDTO;
 import com.emanuel3k.soundscape_backend.domain.user.model.User;
 import com.emanuel3k.soundscape_backend.service.v1.user.UserService;
@@ -31,10 +32,10 @@ public class AuthController {
     }
   }
 
-  @PostMapping(value = "/login")
-  public ResponseEntity<String> userLogin(@Valid @RequestBody LoginRequestDTO body) {
+  @PostMapping("/login")
+  public ResponseEntity<TokenResponseDTO> userLogin(@Valid @RequestBody LoginRequestDTO body) {
     try {
-      String response = userService.loginUser(body);
+      TokenResponseDTO response = userService.loginUser(body);
 
       return ResponseEntity.ok().body(response);
     } catch (Exception e) {

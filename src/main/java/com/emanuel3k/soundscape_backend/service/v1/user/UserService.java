@@ -1,6 +1,7 @@
 package com.emanuel3k.soundscape_backend.service.v1.user;
 
 import com.emanuel3k.soundscape_backend.domain.auth.dto.LoginRequestDTO;
+import com.emanuel3k.soundscape_backend.domain.auth.dto.TokenResponseDTO;
 import com.emanuel3k.soundscape_backend.domain.user.dto.CreateUserDTO;
 import com.emanuel3k.soundscape_backend.domain.user.model.User;
 import com.emanuel3k.soundscape_backend.infra.exception.BadRequestException;
@@ -47,13 +48,15 @@ public class UserService implements IUserService {
   }
 
   @Override
-  public String loginUser(LoginRequestDTO body) {
+  public TokenResponseDTO loginUser(LoginRequestDTO body) {
     User user = userRepository.findByUsername(body.username()).orElseThrow(() -> new BadRequestException("Username or password is incorrect"));
 
     if (!passwordEncoder.matches(body.password(), user.getPassword())) {
       throw new BadRequestException("Username or password is incorrect");
     }
 
-    return tokenService.generateToken(user);
+    String token = tokenService.generateToken(user);
+
+    return new TokenResponseDTO(token);
   }
 }

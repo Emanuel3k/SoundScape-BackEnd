@@ -1,5 +1,6 @@
 package com.emanuel3k.soundscape_backend.infra.exception;
 
+import com.emanuel3k.soundscape_backend.infra.exception.dto.ExceptionResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -28,25 +29,22 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler(BadRequestException.class)
-  public ResponseEntity<Map<String, String>> handleBadRequestException(BadRequestException ex) {
-    Map<String, String> errors = new HashMap<>();
-    errors.put("message", ex.getMessage());
+  public ResponseEntity<ExceptionResponseDTO> handleBadRequestException(BadRequestException ex) {
+    ExceptionResponseDTO errors = new ExceptionResponseDTO(ex.getMessage());
 
     return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
   }
 
   @ExceptionHandler(HttpMessageNotReadableException.class)
-  public ResponseEntity<Map<String, String>> handleHttpMessageNotReadableException() {
-    Map<String, String> errors = new HashMap<>();
-    errors.put("message", "Invalid request body");
+  public ResponseEntity<ExceptionResponseDTO> handleHttpMessageNotReadableException() {
+    ExceptionResponseDTO errors = new ExceptionResponseDTO("Invalid request body");
 
     return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
   }
 
   @ExceptionHandler(Exception.class)
-  public ResponseEntity<Map<String, String>> handleUnmappedException() {
-    Map<String, String> errors = new HashMap<>();
-    errors.put("message", "An unexpected error occurred");
+  public ResponseEntity<ExceptionResponseDTO> handleException(Exception ex) {
+    ExceptionResponseDTO errors = new ExceptionResponseDTO(ex.getMessage());
 
     return new ResponseEntity<>(errors, HttpStatus.INTERNAL_SERVER_ERROR);
   }
