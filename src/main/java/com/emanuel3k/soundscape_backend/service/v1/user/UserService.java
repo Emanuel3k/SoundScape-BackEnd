@@ -14,38 +14,35 @@ import java.util.Optional;
 
 @Service
 public class UserService implements IUserService {
-  @Autowired
-  UserRepository userRepository;
 
   @Autowired
-  PasswordEncoder passwordEncoder;
+  private UserRepository userRepository;
 
   @Autowired
-  TokenService tokenService;
+  private PasswordEncoder passwordEncoder;
+
+  @Autowired
+  private TokenService tokenService;
 
   @Override
   public User createUser(CreateUserDTO body) {
 
-    User user = body.toUser();
-
-    Optional<User> existingUser = userRepository.findByUsername(user.getUsername());
+    Optional<User> existingUser = userRepository.findByUsername(body.username());
 
     if (existingUser.isPresent()) {
       throw new BadRequestException("Username already exists");
     }
 
-    existingUser = userRepository.findByEmail(user.getEmail());
+    existingUser = userRepository.findByEmail(body.email());
 
     if (existingUser.isPresent()) {
       throw new BadRequestException("Email already exists");
     }
 
-    user.setPassword(
-            passwordEncoder.encode(
-                    user.getPassword()
-            )
-    );
-    
+    User user = body.toUser();
+
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
+
     return userRepository.save(user);
   }
 

@@ -16,7 +16,7 @@ import java.net.URI;
 public class AuthController {
 
   @Autowired
-  UserService userService;
+  private UserService userService;
 
   @PostMapping("/register")
   public ResponseEntity<User> register(@Valid @RequestBody CreateUserDTO body) {
@@ -25,7 +25,7 @@ public class AuthController {
 
       URI location = new URI("/v1/users/" + response.getUserId());
 
-      return ResponseEntity.created(location).body(response);
+      return ResponseEntity.created(location).build();
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
