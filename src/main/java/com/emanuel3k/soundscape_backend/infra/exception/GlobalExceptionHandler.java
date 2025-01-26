@@ -1,7 +1,8 @@
-package com.emanuel3k.soundscape_backend.exception;
+package com.emanuel3k.soundscape_backend.infra.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -22,6 +23,22 @@ public class GlobalExceptionHandler {
       String errorMessage = error.getDefaultMessage();
       errors.put(fieldName, errorMessage);
     });
+
+    return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(BadRequestException.class)
+  public ResponseEntity<Map<String, String>> handleBadRequestException(BadRequestException ex) {
+    Map<String, String> errors = new HashMap<>();
+    errors.put("message", ex.getMessage());
+
+    return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(HttpMessageNotReadableException.class)
+  public ResponseEntity<Map<String, String>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
+    Map<String, String> errors = new HashMap<>();
+    errors.put("message", "Invalid request body");
 
     return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
   }
