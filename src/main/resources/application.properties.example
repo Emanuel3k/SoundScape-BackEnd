@@ -1,0 +1,17 @@
+spring.application.name=soundscape_backend
+# Database
+spring.datasource.url=
+spring.datasource.username=
+spring.datasource.password=
+spring.datasource.driver-class-name=
+# Hibernate
+spring.jpa.database-platform=
+spring.jpa.hibernate.ddl-auto=
+spring.jpa.show-sql=
+# Server
+server.servlet.context-path=
+# Logging
+logging.level.org.springframework.web=
+spring.mvc.log-request-details=
+# JWT
+api.security.token.secret=
