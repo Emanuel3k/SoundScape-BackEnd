@@ -3,7 +3,9 @@ package com.emanuel3k.soundscape_backend.infra.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.emanuel3k.soundscape_backend.domain.user.model.User;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -32,19 +34,25 @@ public class TokenService {
       throw new RuntimeException("Error while generating token");
     }
   }
-  
+
   public String validateToken(String token) {
     try {
       Algorithm algorithm = Algorithm.HMAC256(secret);
-      
-      return  JWT.require(algorithm)
+
+      return JWT.require(algorithm)
               .withIssuer("SoundScape")
               .build()
               .verify(token)
               .getSubject();
-    } catch (Exception e) {
-      throw new RuntimeException("Invalid token");
+    } catch (JWTVerificationException jwtVerificationException) {
+      return null;
     }
+  }
+
+  public String recoverToken(HttpServletRequest request) {
+    var authHeader = request.getHeader("Authorization");
+    if (authHeader == null) return null;
+    return authHeader.replace("Bearer ", "");
   }
 
   private Instant GenerateExpirationDate() {
