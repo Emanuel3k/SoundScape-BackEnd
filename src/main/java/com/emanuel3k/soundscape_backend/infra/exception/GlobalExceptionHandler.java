@@ -8,6 +8,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,10 +43,10 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
   }
 
-  @ExceptionHandler(Exception.class)
-  public ResponseEntity<ExceptionResponseDTO> handleException(Exception ex) {
+  @ExceptionHandler(NoResourceFoundException.class)
+  public ResponseEntity<ExceptionResponseDTO> handleNoResourceFoundException(NoResourceFoundException ex) {
     ExceptionResponseDTO errors = new ExceptionResponseDTO(ex.getMessage());
 
-    return new ResponseEntity<>(errors, HttpStatus.INTERNAL_SERVER_ERROR);
+    return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
   }
 }
