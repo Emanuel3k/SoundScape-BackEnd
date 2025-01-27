@@ -6,7 +6,6 @@ import com.emanuel3k.soundscape_backend.domain.user.dto.CreateUserDTO;
 import com.emanuel3k.soundscape_backend.domain.user.model.User;
 import com.emanuel3k.soundscape_backend.service.v1.user.UserService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,8 +15,11 @@ import java.net.URI;
 @RequestMapping("/v1/auth")
 public class AuthController {
 
-  @Autowired
-  private UserService userService;
+  private final UserService userService;
+
+  public AuthController(UserService userService) {
+    this.userService = userService;
+  }
 
   @PostMapping("/register")
   public ResponseEntity<User> register(@Valid @RequestBody CreateUserDTO body) {

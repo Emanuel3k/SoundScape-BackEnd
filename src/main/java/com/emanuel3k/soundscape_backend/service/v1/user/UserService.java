@@ -7,7 +7,6 @@ import com.emanuel3k.soundscape_backend.domain.user.model.User;
 import com.emanuel3k.soundscape_backend.infra.exception.BadRequestException;
 import com.emanuel3k.soundscape_backend.infra.security.TokenService;
 import com.emanuel3k.soundscape_backend.repository.v1.user.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +15,17 @@ import java.util.Optional;
 @Service
 public class UserService implements IUserService {
 
-  @Autowired
-  private UserRepository userRepository;
+  private final UserRepository userRepository;
 
-  @Autowired
-  private PasswordEncoder passwordEncoder;
+  private final PasswordEncoder passwordEncoder;
 
-  @Autowired
-  private TokenService tokenService;
+  private final TokenService tokenService;
+
+  public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, TokenService tokenService) {
+    this.userRepository = userRepository;
+    this.passwordEncoder = passwordEncoder;
+    this.tokenService = tokenService;
+  }
 
   @Override
   public User createUser(CreateUserDTO body) {
