@@ -34,7 +34,7 @@ public class Spotify {
 
   @Column(nullable = false)
   String scope;
-  
+
   @OneToOne
   @JoinColumn(name = "userId", referencedColumnName = "userId")
   private User user;
